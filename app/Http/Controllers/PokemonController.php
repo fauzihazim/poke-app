@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
+use Livewire\WithPagination;
+use Livewire\Component;
 use App\Models\pokemon;
 use Illuminate\Http\Request;
+
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 
 class PokemonController extends Controller
 {
@@ -20,8 +26,22 @@ class PokemonController extends Controller
             $pokemon = Http::get("https://pokeapi.co/api/v2/pokemon/$pokemonName")->json();
             $results[$i]["img"] = $pokemon["sprites"]["front_default"];
         }
-        // dd($results);
-        return view('viewPoke',['results'=>$results]);
+        $results = $this->paginate($results);
+        // dd(url()->full());
+        // dd(url()->current());
+        // $kompak = compact('results');
+        // dd($results, $kompak["perPage"]);
+        // dd(compact('results'), $results);
+        return view('viewPoke', compact('results'));
+        // dd(gettype($results));
+        // return view('viewPoke',['results'=>$results])->paginate(4);
+    }
+
+    public function paginate($items, $perPage = 4, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 
     /**
