@@ -27,14 +27,10 @@ class PokemonController extends Controller
             $results[$i]["img"] = $pokemon["sprites"]["front_default"];
         }
         $results = $this->paginate($results);
-        // dd(url()->full());
-        // dd(url()->current());
-        // $kompak = compact('results');
-        // dd($results, $kompak["perPage"]);
-        // dd(compact('results'), $results);
-        return view('viewPoke', compact('results'));
-        // dd(gettype($results));
-        // return view('viewPoke',['results'=>$results])->paginate(4);
+        $url = url()->full();
+        $url = (explode("=", $url)); // buat ambil per_page
+        $short_url = $url[1] ?? 1;
+        return view('viewPoke', ['results'=>$results, 'short_url'=>$short_url]);
     }
 
     public function paginate($items, $perPage = 4, $page = null, $options = [])

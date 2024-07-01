@@ -62,19 +62,17 @@
             @endforeach
         </div>
         <nav class="pagination" role="navigation" aria-label="pagination">
-            <a class="pagination-previous is-disabled" title="This is the first page"
-                >Previous</a
-            >
-            <a href="#" class="pagination-next">Next page</a>
+            <a href="?page={{ $short_url - 1 }}" class="pagination-previous" {{ $short_url == '1' ? 'disabled' : ''  }} title="This is the first page">Previous</a>
+            <a href="?page={{ $short_url + 1 }}" class="pagination-next" {{ $short_url == '3' ? 'disabled' : ''  }}>Next page</a>
             <ul class="pagination-list">
                 <li>
-                    <a href="?page=1" class="pagination-link {{ url()->full() == 'http://127.0.0.1:8000/?page=1' ? 'is-current' : ''  }} {{ url()->full() == 'http://127.0.0.1:8000' ? 'is-current' : ''  }}" aria-label="Page 1">1</a>
+                    <a href="?page=1" class="pagination-link {{ $short_url == '1' ? 'is-current' : ''  }}" aria-label="Page 1">1</a>
                 </li>
                 <li>
-                    <a href="?page=2" class="pagination-link {{ url()->full() == 'http://127.0.0.1:8000/?page=2' ? 'is-current' : ''  }}" aria-label="Goto page 2">2</a>
+                    <a href="?page=2" class="pagination-link {{ $short_url == '2' ? 'is-current' : ''  }}" aria-label="Goto page 2">2</a>
                 </li>
                 <li>
-                    <a href="?page=3" class="pagination-link {{ url()->full() == 'http://127.0.0.1:8000/?page=3' ? 'is-current' : ''  }}" aria-label="Goto page 3">3</a>
+                    <a href="?page=3" class="pagination-link {{ $short_url == '3' ? 'is-current' : ''  }}" aria-label="Goto page 3">3</a>
                 </li>
             </ul>
         </nav>
