@@ -20,7 +20,7 @@
                             <img
                                 src={{ $result["img"] }}
                                 alt="Image 1"
-                            />
+                                loading="lazy">
                         </figure>
                     </div>
                     <div class="card-content">
@@ -30,7 +30,7 @@
                                 <img
                                     src={{ $result["img"] }}
                                     alt="Placeholder image"
-                                />
+                                    loading="lazy">
                                 </figure>
                             </div>
                             <div class="media-content">
@@ -62,17 +62,17 @@
             @endforeach
         </div>
         <nav class="pagination" role="navigation" aria-label="pagination">
-            <a href="?page={{ $short_url - 1 }}" class="pagination-previous" {{ $short_url == '1' ? 'disabled' : ''  }} title="This is the first page">Previous</a>
-            <a href="?page={{ $short_url + 1 }}" class="pagination-next" {{ $short_url == '3' ? 'disabled' : ''  }}>Next page</a>
+            <a href="{{ $results->previousPageUrl() }}" class="pagination-previous" {{ $results->previousPageUrl() == null ? 'disabled' : '' }} title="This is the first page">Previous</a>
+            <a href="{{ $results->nextPageUrl() }}" class="pagination-next" {{ $results->nextPageUrl() == null ? 'disabled' : ''  }}>Next page</a>
             <ul class="pagination-list">
                 <li>
-                    <a href="?page=1" class="pagination-link {{ $short_url == '1' ? 'is-current' : ''  }}" aria-label="Page 1">1</a>
+                    <a href="?page=1" class="pagination-link {{ $results->currentPage() == '1' ? 'is-current' : ''  }}" aria-label="Page 1">1</a>
                 </li>
                 <li>
-                    <a href="?page=2" class="pagination-link {{ $short_url == '2' ? 'is-current' : ''  }}" aria-label="Goto page 2">2</a>
+                    <a href="?page=2" class="pagination-link {{ $results->currentPage() == '2' ? 'is-current' : ''  }}" aria-label="Goto page 2">2</a>
                 </li>
                 <li>
-                    <a href="?page=3" class="pagination-link {{ $short_url == '3' ? 'is-current' : ''  }}" aria-label="Goto page 3">3</a>
+                    <a href="?page=3" class="pagination-link {{ $results->currentPage() == '3' ? 'is-current' : ''  }}" aria-label="Goto page 3">3</a>
                 </li>
             </ul>
         </nav>

@@ -27,10 +27,13 @@ class PokemonController extends Controller
             $results[$i]["img"] = $pokemon["sprites"]["front_default"];
         }
         $results = $this->paginate($results);
-        $url = url()->full();
-        $url = (explode("=", $url)); // buat ambil per_page
-        $short_url = $url[1] ?? 1;
-        return view('viewPoke', ['results'=>$results, 'short_url'=>$short_url]);
+        // $results = $this->toArray($results);
+        // $results = compact($results);
+        // dd(gettype($results), $results->currentPage(), $results->previousPageUrl(), $results->nextPageUrl(), $results);
+        // $url = url()->full();
+        // $url = (explode("=", $url)); // buat ambil per_page
+        // $short_url = $url[1] ?? 1;
+        return view('viewPoke', ['results'=>$results]);
     }
 
     public function paginate($items, $perPage = 4, $page = null, $options = [])
@@ -38,6 +41,42 @@ class PokemonController extends Controller
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $items = $items instanceof Collection ? $items : Collection::make($items);
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
+
+    public function paginate2($perPage = 15, $columns = ['*'], $pageName = 'page', $page = null)
+    {
+        $page = $page ?: Paginator::resolveCurrentPage($pageName);
+
+        $total = $this->getCountForPagination($columns);
+
+        $results = $total ? $this->forPage($page, $perPage)->get($columns) : [];
+
+        return new LengthAwarePaginator($results, $total, $perPage, $page, [
+            'path' => Paginator::resolveCurrentPath(),
+            'pageName' => $pageName,
+        ]);
+    }
+
+    public function toArray($results)
+    {
+        return [
+            'data' => $this->items->toArray(),
+            'meta' => [
+                'pagination' => [
+                    'current_page' => $this->currentPage(),
+                    'first_page_url' => $this->url(1),
+                    'from' => $this->firstItem(),
+                    'last_page' => $this->lastPage(),
+                    'last_page_url' => $this->url($this->lastPage()),
+                    'next_page_url' => $this->nextPageUrl(),
+                    'path' => $this->path(),
+                    'per_page' => $this->perPage(),
+                    'prev_page_url' => $this->previousPageUrl(),
+                    'to' => $this->lastItem(),
+                    'total' => $this->total(),
+                ],
+            ],
+        ];
     }
 
     /**
