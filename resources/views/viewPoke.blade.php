@@ -10,11 +10,68 @@
   <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.15.4/css/all.css">
 </head>
 <body>
+    <!-- Main container -->
+    <nav class="level mt-3 mx-2">
+        <!-- Left side -->
+        <div class="level-item has-text-centered">
+            <form action="" method="get">
+                <div class="field has-addons">
+                    <p class="control">
+                        <span class="select">
+                            <select>
+                                <option value="name">name</option>
+                                <option value="id">id</option>
+                                <option value="species">species</option>
+                            </select>
+                        </span>
+                    </p>
+                    <p class="control is-expanded">
+                        <input class="input" type="text" placeholder="Searching ...">
+                    </p>
+                    <p class="control">
+                        <button class="button is-success">
+                            <span class="icon-text">
+                                <span class="icon">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <span>Search</span>
+                            </span>
+                        </button>
+                    </p>
+                </div>
+            </form>
+        </div>
+    
+        <!-- Right side -->
+        <div class="level-right">
+            <p class="level-item"><a class="button is-success">Login</a></p>
+            <p class="level-item"><a class="button is-link">Register</a></p>
+        </div>
+    </nav>
+    <div class="dropdown is-hoverable mx-6 mb-3">
+        <div class="dropdown-trigger">
+          <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+            <span>Show me: 4</span>
+            <span class="icon is-small">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+            <div class="dropdown-content">
+                <a href="#" class="dropdown-item"> 4 </a>
+                <a href="#" class="dropdown-item"> 8 </a>
+                <a href="#" class="dropdown-item"> 12 </a>
+                <hr class="dropdown-divider" />
+                <a href="#" class="dropdown-item"> All </a>
+            </div>
+        </div>
+    </div>
     <div class="container">
-        <div class="columns">
+        <div class="columns is-multiline">
             @foreach ($results as $result)
             <div class="column is-3">
-                <div class="card">
+                <div class="card ml-3">
                     <div class="card-image">
                         <figure class="image is-1by1">
                             <img
@@ -61,7 +118,7 @@
             </div>
             @endforeach
         </div>
-        <nav class="pagination" role="navigation" aria-label="pagination">
+        <nav class="pagination ml-2 mb-3" role="navigation" aria-label="pagination">
             <a href="{{ $results->previousPageUrl() }}" class="pagination-previous" {{ $results->previousPageUrl() == null ? 'disabled' : '' }} title="This is the first page">Previous</a>
             <a href="{{ $results->nextPageUrl() }}" class="pagination-next" {{ $results->nextPageUrl() == null ? 'disabled' : ''  }}>Next page</a>
             <ul class="pagination-list">

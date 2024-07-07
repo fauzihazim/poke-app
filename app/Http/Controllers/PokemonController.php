@@ -18,7 +18,7 @@ class PokemonController extends Controller
      * Display a listing of the resource.
      */
     public function index() {
-        $pokemons = Http::get('https://pokeapi.co/api/v2/pokemon?limit=10')->json();
+        $pokemons = Http::get('https://pokeapi.co/api/v2/pokemon?limit=23')->json();
         $lenPokemon = count($pokemons["results"]);
         for ($i = 0; $i < $lenPokemon; $i++) {
             $results[$i]["name"] = $pokemons["results"][$i]["name"];
@@ -26,17 +26,11 @@ class PokemonController extends Controller
             $pokemon = Http::get("https://pokeapi.co/api/v2/pokemon/$pokemonName")->json();
             $results[$i]["img"] = $pokemon["sprites"]["front_default"];
         }
-        $results = $this->paginate($results);
-        // $results = $this->toArray($results);
-        // $results = compact($results);
-        // dd(gettype($results), $results->currentPage(), $results->previousPageUrl(), $results->nextPageUrl(), $results);
-        // $url = url()->full();
-        // $url = (explode("=", $url)); // buat ambil per_page
-        // $short_url = $url[1] ?? 1;
+        $results = $this->paginate($results, 4);
         return view('viewPoke', ['results'=>$results]);
     }
 
-    public function paginate($items, $perPage = 4, $page = null, $options = [])
+    public function paginate($items, $perPage, $page = null, $options = [])
     {
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $items = $items instanceof Collection ? $items : Collection::make($items);
