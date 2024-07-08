@@ -118,7 +118,19 @@
                 </div>
             @endforeach
         </div>
-        <nav class="pagination ml-2 mb-3" role="navigation" aria-label="pagination">
+            {{-- <nav class="pagination ml-2 mb-3" role="navigation" aria-label="pagination">
+                <a href="{{ $results->previousPageUrl() }}" class="pagination-previous" {{ $results->previousPageUrl() == null ? 'disabled' : '' }} title="This is the first page">Previous</a>
+                <a href="{{ $results->nextPageUrl() }}" class="pagination-next" {{ $results->nextPageUrl() == null ? 'disabled' : ''  }}>Next page</a>
+                <ul class="pagination-list">
+                    @for ($i = 1; $i <= $lastPage; $i++)
+                        <li>
+                            <a href="?page={{ $i }}" class="pagination-link {{ $results->currentPage() == $i ? 'is-current' : ''  }}" aria-label="Page {{ $i }}">{{ $i }}</a>
+                        </li>
+                    @endfor
+                </ul>
+            </nav> --}}
+        
+        {{-- <nav class="pagination ml-2 mb-3" role="navigation" aria-label="pagination">
             <a href="{{ $results->previousPageUrl() }}" class="pagination-previous" {{ $results->previousPageUrl() == null ? 'disabled' : '' }} title="This is the first page">Previous</a>
             <a href="{{ $results->nextPageUrl() }}" class="pagination-next" {{ $results->nextPageUrl() == null ? 'disabled' : ''  }}>Next page</a>
             <ul class="pagination-list">
@@ -129,6 +141,17 @@
                         </li>
                     @endif
                 @endforeach
+            </ul>
+        </nav> --}}
+        <nav class="pagination ml-2 mb-3" role="navigation" aria-label="pagination">
+            <a href="{{ $results->previousPageUrl() }}" class="pagination-previous" {{ $results->previousPageUrl() == null ? 'disabled' : '' }} title="Previous page">Previous</a>
+            <a href="{{ $results->nextPageUrl() }}" class="pagination-next" {{ $results->nextPageUrl() == null ? 'disabled' : ''  }} title="Next page">Next page</a>
+            <ul class="pagination-list">
+                @for ($i = 1; $i <= $lastPage; $i++)
+                    <li>
+                        <a href="?page={{ $i }}" class="pagination-link {{ $results->currentPage() == $i ? 'is-current' : ''  }}" aria-label="Page {{ $i }}">{{ $i }}</a>
+                    </li>
+                @endfor
             </ul>
         </nav>
     </div>
