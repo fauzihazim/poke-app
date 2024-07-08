@@ -26,33 +26,29 @@ class PokemonController extends Controller
             $pokemon = Http::get("https://pokeapi.co/api/v2/pokemon/$pokemonName")->json();
             $results[$i]["img"] = $pokemon["sprites"]["front_default"];
         }
-        $results = $this->paginate($results, 4);
-        return view('viewPoke', ['results'=>$results]);
+        $perPage = 8;
+        $results = $this->paginate($results, $perPage);
+        $lastPage = $results->lastPage();
+        return view('viewPoke', ['results'=>$results, 'lastPage'=>$lastPage, 'perPage'=>$perPage]);
     }
 
-    public function paginate($items, $perPage, $page = null, $options = [])
-    {
+    public function paginate($items, $perPage, $page = null, $options = []) {
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $items = $items instanceof Collection ? $items : Collection::make($items);
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 
-    public function paginate2($perPage = 15, $columns = ['*'], $pageName = 'page', $page = null)
-    {
+    public function paginate2($perPage = 15, $columns = ['*'], $pageName = 'page', $page = null) {
         $page = $page ?: Paginator::resolveCurrentPage($pageName);
-
         $total = $this->getCountForPagination($columns);
-
         $results = $total ? $this->forPage($page, $perPage)->get($columns) : [];
-
         return new LengthAwarePaginator($results, $total, $perPage, $page, [
             'path' => Paginator::resolveCurrentPath(),
             'pageName' => $pageName,
         ]);
     }
 
-    public function toArray($results)
-    {
+    public function toArray($results) {
         return [
             'data' => $this->items->toArray(),
             'meta' => [
